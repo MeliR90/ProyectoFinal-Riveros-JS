@@ -8,6 +8,7 @@
 .imagen {
     width: 10rem;
     height: 10rem;
+    background-color: white;
 }
 .producto {
     font-weight:bold ;
@@ -31,9 +32,8 @@ hr {
 }
 
 .dark {
-    background-color: black;
+    background-color: rgb(54, 53, 53);
     color: white;
-    
 }
 .fondo {
     margin-left: 1rem;
