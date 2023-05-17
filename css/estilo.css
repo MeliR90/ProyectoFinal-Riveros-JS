@@ -29,3 +29,12 @@ h3 {
 hr {
     border: 0.2rem solid brown;
 }
+
+.dark {
+    background-color: black;
+    color: white;
+    
+}
+.fondo {
+    margin-left: 1rem;
+}

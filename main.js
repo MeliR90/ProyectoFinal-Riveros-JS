@@ -1,20 +1,44 @@
 //Declaración de variables y constantes
 
-let nombre = prompt("Ingrese su nombre: ");
-titulo.innerText = "Bienvenid@ " + nombre;
+
+titulo.innerText = "Bienvenidos";
 let carrito = [];
 const divisa = '$';
 const producto1 = document.querySelector('#producto');
 const carrito1 = document.querySelector('#carrito');
 const total = document.querySelector('#total');
 const botonVaciar = document.querySelector('#boton-vaciar');
+const carritoLocalStorage = window.localStorage;
+
+
+const botonDark = document.getElementById("botonFondo");
+botonDark.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("modo", "dark");
+    }
+    else {
+        localStorage.setItem("modo", "light");
+    }
+}
+)
+
+const modo = localStorage.getItem("modo");
+
+if (modo === "dark") {
+    document.body.classList.add("dark");
+} else {
+    document.body.classList.remove("dark");
+}
+
+
 
 class Producto {
     constructor(nombre, precio, url, id) {
         this.nombre = nombre;
         this.precio = precio;
         this.url = url;
-        this.id =id;
+        this.id = id;
     }
 }
 
@@ -45,9 +69,16 @@ arrayProductos.forEach(producto => {
 //CARRITO
 
 function agregarProductoAlCarrito(evento) {
-    
+
     carrito.push(evento.target.getAttribute('marcador'))
+    Toastify({
+
+        text: "Producto agregado",
+        duration: 3000
+
+    }).showToast();
     renderizarCarrito();
+    guardaEnLocalStorage();
 }
 
 function renderizarCarrito() {
@@ -77,16 +108,17 @@ function renderizarCarrito() {
     total.textContent = calcularTotal()
 }
 function borrarItemCarrito(evento) {
-   
+
     const id = evento.target.dataset.producto;
- 
+
     carrito = carrito.filter((carritoId) => {
         return carritoId !== id;
     });
-   
+
     renderizarCarrito();
+    guardaEnLocalStorage();
 }
-function calcularTotal(){
+function calcularTotal() {
 
     return carrito.reduce((total, Producto) => {
 
@@ -97,13 +129,27 @@ function calcularTotal(){
     }, 0).toFixed(2);
 }
 function vaciarCarrito() {
-  
+
     carrito = [];
-   
+    Swal.fire(
+        'Carrito Vacío!',
+        'Te esperamos nuevamente',
+        'success'
+      )
     renderizarCarrito();
+    localStorage.clear();
 }
 
+function guardaEnLocalStorage() {
+    carritoLocalStorage.setItem('carrito', JSON.stringify(carrito));
+}
+function cargaCarritoDeLocalStorage() {
+
+    if (carritoLocalStorage.getItem('carrito') !== null) {
+        carrito = JSON.parse(carritoLocalStorage.getItem('carrito'));
+    }
+}
 
 botonVaciar.addEventListener('click', vaciarCarrito);
-
+cargaCarritoDeLocalStorage();
 renderizarCarrito();
