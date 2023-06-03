@@ -44,7 +44,7 @@ class Producto {
 
 const cafe = new Producto("Café", 800, "img/cafe.png", 1);
 const te = new Producto("Té", 300, "img/te.png", 2);
-const vaso = new Producto("Vaso", 1280, "img/vaso1.webp", 3);
+const vaso = new Producto("Vaso", 1280, "img/vaso.png", 3);
 
 const arrayProductos = [cafe, te, vaso];
 
@@ -135,7 +135,7 @@ function vaciarCarrito() {
         'Carrito Vacío!',
         'Te esperamos nuevamente',
         'success'
-      )
+    )
     renderizarCarrito();
     localStorage.clear();
 }
@@ -153,3 +153,21 @@ function cargaCarritoDeLocalStorage() {
 botonVaciar.addEventListener('click', vaciarCarrito);
 cargaCarritoDeLocalStorage();
 renderizarCarrito();
+
+const dolar = "https://criptoya.com/api/dolar";
+
+const divDolar = document.getElementById("divDolar");
+
+
+setInterval(() => {
+
+    fetch(dolar)
+        .then(respuesta => respuesta.json())
+        .then(({ oficial }) => {
+            divDolar.innerHTML = `
+                                <h3>Cotización Dólar</h3>
+                                <p class= "cotizacion">Dolar Oficial: $${oficial}</p>
+                                `
+        })
+        .catch(error => console.log(error))
+}, 3000)
